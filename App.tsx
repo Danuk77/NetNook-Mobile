@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -9,7 +9,71 @@ import {
   TouchableOpacity
 } from 'react-native';
 
+import { useCallback, useState, useMemo } from 'react';
+
+// Import the encrypted persistant store
+import EncryptedStorage from 'react-native-encrypted-storage';
+
 function App(): JSX.Element {
+
+  const [integrationKey, setIntegrationKey] = useState<string>("");
+  const [dataBaseID, setDatabaseID] = useState<string>("");
+
+  /**
+   * Generic function to handle the changes in react states from user inputs
+   * @param newVal 
+   * @param changeFunction 
+   */
+  const changeState = (newVal: string, changeFunction: React.Dispatch<React.SetStateAction<string>>) => {
+    changeFunction(newVal);
+  };
+
+  /**
+   * Store the integration and database keys within the native stores (Android -> EncryptedSharedPreferences, ios -> Keychain)
+   */
+  const storeKeys = useCallback(async () => {
+    try {
+      await EncryptedStorage.setItem(
+        "UserKeys",
+        JSON.stringify({
+          integrationKey: integrationKey,
+          dataBaseID: dataBaseID
+        })
+      );
+      console.log("Saved");
+    } catch (err) {
+      console.log(err);
+    }
+  }, [integrationKey, dataBaseID]);
+
+
+  /**
+   * Function called when app starts up
+   * Populates the integration and database id fields from the encrypted keys stored in the native stores
+   */
+  const populateFields = useEffect(() => {
+    async function getKeys() {
+      try {
+        const session = await EncryptedStorage.getItem("UserKeys");
+
+        if (session !== undefined) {
+          // Congrats! You've just retrieved your first value!
+          setIntegrationKey(JSON.parse(session!)["integrationKey"]);
+          setDatabaseID(JSON.parse(session!)["dataBaseID"]);
+        } else {
+          // TODO - Tell the user to configure the setting
+        }
+      } catch (error) {
+        // There was an error on the native side
+        console.log(error);
+      }
+    };
+
+    // Call the keys
+    getKeys();
+  }, []);
+
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Configuration heading */}
@@ -24,22 +88,28 @@ function App(): JSX.Element {
       />
 
       <View style={{ marginTop: 50 }}>
+        {/* For the integration key */}
         <Text style={styles.headings}>Integration Key</Text>
         <TextInput
+          value={integrationKey}
           style={styles.inputs}
           placeholder='Key'
+          onChangeText={(text) => changeState(text, setIntegrationKey)}
         />
 
-        <Text style={styles.headings}>Database Key</Text>
+        {/* For the database id */}
+        <Text style={styles.headings}>Database ID</Text>
         <TextInput
+          value={dataBaseID}
           style={styles.inputs}
           placeholder='Key'
+          onChangeText={(text) => changeState(text, setDatabaseID)}
         />
       </View>
 
       {/* Alternate log in Google button */}
       <View style={styles.submit}>
-        <TouchableOpacity onPress={() => { console.log("Clicked") }}>
+        <TouchableOpacity onPress={storeKeys}>
           <Image
             resizeMode="contain"
             source={require('./Assets/Submit.png')}
@@ -50,9 +120,8 @@ function App(): JSX.Element {
           />
         </TouchableOpacity>
       </View>
-
     </SafeAreaView >);
-}
+};
 
 const styles = StyleSheet.create({
   container: {
