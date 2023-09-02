@@ -1,118 +1,64 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
-import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
+  Image,
   Text,
-  useColorScheme,
-  View,
+  TextInput,
+  View
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <SafeAreaView style={styles.container}>
+      {/* Configuration heading */}
+      <Image
+        style={{
+          width: 300,
+          alignSelf: 'center',
+          resizeMode: 'contain',
+          marginTop: 100
+        }}
+        source={require('./Assets/Configuration.png')}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+
+      <View style={{ marginTop: 50 }}>
+        <Text style={styles.headings}>Integration Key</Text>
+        <TextInput
+          style={styles.inputs}
+          placeholder='Key'
+        />
+
+        <Text style={styles.headings}>Database Key</Text>
+        <TextInput
+          style={styles.inputs}
+          placeholder='Key'
+        />
+      </View>
+    </SafeAreaView>);
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    backgroundColor: '#DCF5ED',
+    color: '#1C1D21',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  inputs: {
+    backgroundColor: 'white',
+    borderColor: 'black',
+    borderWidth: 1,
+    width: '90%',
+    alignSelf: 'center',
+    marginTop: 20,
+    marginBottom: 30,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+  headings: {
+    fontWeight: 'bold',
+    color: 'black',
+    fontSize: 20,
+    marginLeft: '5%'
+  }
 });
 
 export default App;
