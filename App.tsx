@@ -5,7 +5,8 @@ import {
   Image,
   Text,
   TextInput,
-  View
+  View,
+  TouchableOpacity
 } from 'react-native';
 
 function App(): JSX.Element {
@@ -35,7 +36,22 @@ function App(): JSX.Element {
           placeholder='Key'
         />
       </View>
-    </SafeAreaView>);
+
+      {/* Alternate log in Google button */}
+      <View style={styles.submit}>
+        <TouchableOpacity onPress={() => { console.log("Clicked") }}>
+          <Image
+            resizeMode="contain"
+            source={require('./Assets/Submit.png')}
+            style={{
+              width: '100%',
+              height: '100%'
+            }}
+          />
+        </TouchableOpacity>
+      </View>
+
+    </SafeAreaView >);
 }
 
 const styles = StyleSheet.create({
@@ -58,6 +74,12 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 20,
     marginLeft: '5%'
+  },
+  submit: {
+    alignSelf: 'center',
+    width: '50%',
+    height: 50,
+    marginTop: 30
   }
 });
 
