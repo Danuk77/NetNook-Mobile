@@ -6,7 +6,8 @@ import {
   Text,
   TextInput,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 
 import { useCallback, useState, useMemo } from 'react';
@@ -40,7 +41,8 @@ function App(): JSX.Element {
           dataBaseID: dataBaseID
         })
       );
-      console.log("Saved");
+
+      Alert.alert("Configured");
     } catch (err) {
       console.log(err);
     }
@@ -61,7 +63,7 @@ function App(): JSX.Element {
           setIntegrationKey(JSON.parse(session!)["integrationKey"]);
           setDatabaseID(JSON.parse(session!)["dataBaseID"]);
         } else {
-          // TODO - Tell the user to configure the setting
+          Alert.alert("Please enter the integration key and the database id");
         }
       } catch (error) {
         // There was an error on the native side
@@ -123,6 +125,7 @@ function App(): JSX.Element {
     </SafeAreaView >);
 };
 
+// Styles for the page
 const styles = StyleSheet.create({
   container: {
     flex: 1,
