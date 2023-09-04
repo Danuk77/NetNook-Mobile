@@ -7,13 +7,16 @@ import {
   TextInput,
   View,
   TouchableOpacity,
-  Alert
+  Alert,
+  Share
 } from 'react-native';
 
 import { useCallback, useState, useMemo } from 'react';
 
 // Import the encrypted persistant store
 import EncryptedStorage from 'react-native-encrypted-storage';
+
+import ShareMenu, { ShareMenuReactView } from "react-native-share-menu";
 
 function App(): JSX.Element {
 
@@ -28,6 +31,7 @@ function App(): JSX.Element {
   const changeState = (newVal: string, changeFunction: React.Dispatch<React.SetStateAction<string>>) => {
     changeFunction(newVal);
   };
+
 
   /**
    * Store the integration and database keys within the native stores (Android -> EncryptedSharedPreferences, ios -> Keychain)
